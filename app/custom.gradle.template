@@ -1,0 +1,3 @@
+ext {
+    updateUserTokenEndpoint = '"http://some_server:some_port/user-token"'
+}
