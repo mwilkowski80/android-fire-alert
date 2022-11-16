@@ -7,23 +7,25 @@ import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
 public class FireAlarmMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         Log.d("FireAlarm", "Refreshed token: " + token);
 
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // FCM registration token to your app server.
-        //sendRegistrationToServer(token);
+        try {
+            var updateUserTokenUseCase = ServiceLocator.getInstance().getUpdateUserTokenUseCase();
+            updateUserTokenUseCase.invoke(token);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
-        String title = message.getNotification().getTitle();
-        String text = message.getNotification().getBody();
-
-        Log.d("FireAlarm", "Notification: " + title + "|" + text);
-        super.onMessageReceived(message);
+        ServiceLocator.getInstance().getFireAlarmUseCase().invoke();
     }
 }

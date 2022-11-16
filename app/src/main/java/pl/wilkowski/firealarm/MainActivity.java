@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
     private static final String TAG = "FireAlarm";
-    private UpdateUserTokenUseCase updateUserTokenUseCase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +55,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        initUpdateUserTokenUseCase();
-    }
-
-    private void initUpdateUserTokenUseCase() {
-        try {
-            updateUserTokenUseCase = new UpdateUserTokenUseCase(
-                    new URL(BuildConfig.updateUserTokenEndpoint));
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "Exception when creating user token endpoint", e);
-            throw new RuntimeException(e);
-        }
-
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(this::captureAndUpdateUserToken);
     }
@@ -84,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUserToken(String userToken) {
         try {
+            var updateUserTokenUseCase =
+                    ServiceLocator.getInstance().getUpdateUserTokenUseCase();
             updateUserTokenUseCase.invoke(userToken);
             Log.i(TAG, "Updated user token successfully");
         } catch (Exception e) {
