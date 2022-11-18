@@ -12,9 +12,11 @@ import org.json.JSONException;
 import java.io.IOException;
 
 public class FireAlarmMessagingService extends FirebaseMessagingService {
+    private static final String TAG = "FireAlarm";
+
     @Override
     public void onNewToken(@NonNull String token) {
-        Log.d("FireAlarm", "Refreshed token: " + token);
+        Log.d(TAG, "Refreshed token: " + token);
 
         try {
             var updateUserTokenUseCase = ServiceLocator.getInstance().getUpdateUserTokenUseCase();
@@ -26,6 +28,7 @@ public class FireAlarmMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
+        Log.d(TAG, "Message received: " + message.getData());
         ServiceLocator.getInstance().getFireAlarmUseCase().invoke();
     }
 }

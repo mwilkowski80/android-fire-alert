@@ -24,11 +24,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SupportsOnDestroyListeners {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ServiceLocator.create(this, this);
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(this::captureAndUpdateUserToken);
     }
@@ -117,5 +118,27 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(mediaPlayer1 -> {
             Toast.makeText(getApplicationContext(), "some fun", Toast.LENGTH_LONG).show();
         });
+    }
+
+    List<OnDestroyListener> onDestroyListeners = new ArrayList<>();
+
+    @Override
+    public void addOnDestroyListener(OnDestroyListener listener) {
+        if (!onDestroyListeners.contains(listener)) {
+            onDestroyListeners.add(listener);
+        }
+    }
+
+    @Override
+    public void removeOnDestroyListener(OnDestroyListener listener) {
+        onDestroyListeners.remove(listener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        for (OnDestroyListener listener : onDestroyListeners) {
+            listener.onDestroy();
+        }
+        super.onDestroy();
     }
 }

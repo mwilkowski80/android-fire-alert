@@ -1,7 +1,5 @@
 package pl.wilkowski.firealarm;
 
-class Alarm {
-
-    void start() {
-    }
+interface Alarm {
+    void start();
 }
