@@ -8,7 +8,7 @@ I am not a professional Android software developer. Hence, this code is mostly a
 
 ## Getting started
 
-This app uses Firebase Cloud Messaging for communication with the server. You should create an FCM project as per the (fire-alert-server)[https://github.com/mwilkowski80/fire-alert-server] project. Then, You need to provide the FCM app config and save it as `google-services.json` file. You can read more at https://support.google.com/firebase/answer/7015592?hl=en#android&zippy=%2Cin-this-article.
+This app uses Firebase Cloud Messaging for communication with the server. You should create an FCM project as per the [fire-alert-server](https://github.com/mwilkowski80/fire-alert-server) project. Then, You need to provide the FCM app config and save it as `google-services.json` file. You can read more at https://support.google.com/firebase/answer/7015592?hl=en#android&zippy=%2Cin-this-article.
 
 Create a `custom.gradle` file from the `custom.gradle.template`. Replace `some_server` and `some_port` with the corresponding server name and port setting for HTTP protocol of the `fire-alert-server` project. This address will be used by the Android App to submit the FCM user token.  
 
